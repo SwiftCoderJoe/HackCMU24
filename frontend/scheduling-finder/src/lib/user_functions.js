@@ -91,7 +91,7 @@ export async function setup(username, classTimes) {
             }
         }
         
-        let courseInfo = courseName + ' : ' + courseNumber
+        let courseInfo = courseNumber + ' : ' + courseName
         await updateDoc(doc(db, 'users', username), {
             classes: arrayUnion(courseInfo),
             uploaded: true
