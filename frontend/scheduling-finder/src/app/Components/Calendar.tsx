@@ -19,7 +19,7 @@ export default function Calendar({ busyArray }: { busyArray: boolean[][] }) {
                     <tr key={hour} className="h-4">
                         <td>{Math.floor(hour / 2) + ":" + (hour % 2 == 0 ? "00" : "30")}</td>
                         {Array.from(Array(7).keys()).map(day => (
-                            <td key={day} className={busyArray[day][hour] ? "w-10 bg-red-950" : "w-8 bg-slate-600"}></td>
+                            <td key={day} className={busyArray[day * 48 + hour] ? "w-10 bg-red-950" : "w-8 bg-slate-600"}></td>
                         ))}
                     </tr>
                 ))}
