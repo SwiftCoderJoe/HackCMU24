@@ -19,16 +19,17 @@ export default function ClassPage({ params }: { params: { classNum: string } }) 
     async function fetchPosts() {
       let res = await fetch('/api/student/' + session?.user?.name)
       let data = await res.json()
-      console.log(data)
       setUserData(data)
 
       // get the class
-      let classData:any = await getClass(decodeURI(params.classNum));
+      console.log(decodeURI(params.classNum).replace("%3A", ":"))
+      let classData:any = await getClass(decodeURI(params.classNum).replace("%3A", ":"));
 
-      let studentData = studentSearch(await getTimes(session?.user?.name), classData.users.filter((user: any) => user != session?.user?.name), 16, 44)
+      console.log(classData)
+
+      let studentData = await studentSearch(await getTimes(session?.user?.name), classData.users.filter((user: any) => user != session?.user?.name), 16, 44)
 
       console.log(studentData)
-      console.log(classData)
       setStudentData(studentData);
       setCourseData(classData);
     }

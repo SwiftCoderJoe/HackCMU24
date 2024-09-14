@@ -7,12 +7,12 @@ import { getUserData } from "./user_functions";
 //student_list is a list of strings (names)
 //returns a list of kvp. first is number of hours in common, second is a list of students
 
-export function getTimes(student){
+export async function getTimes(student){
     let ret = [];
     for(let i = 0; i< 7; i++){
         ret.push([]);
         for(let j = 0; j< 48; j++){
-            ret[i].push(getUserData(student).times[48*i + j]);
+            ret[i].push((await getUserData(student)).times[48*i + j]);
         }
     }
     return ret;
@@ -46,10 +46,10 @@ export function getMatchesCnt(matchTimes){
     return ret;
 }
 
-export function studentSearch(time, student_list, lo, hi){
+export async function studentSearch(time, student_list, lo, hi){
     let ret = {};
     for(let i = 0; i< student_list.length; i++){
-        let matches = matchWeek(time, getTimes(student[i]), lo, hi);
+        let matches = matchWeek(time, await getTimes(student[i]), lo, hi);
         let matchCnt = getMatchesCnt(matches);
         if(ret[matchCnt] == undefined){
             ret[matchCnt] = [];
