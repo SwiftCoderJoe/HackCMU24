@@ -26,7 +26,8 @@ export async function register(username) {
         classes: [],
         times: [],
         groups: [],
-        contact: ''
+        contact: '',
+        uploaded: false
     })
 }
 

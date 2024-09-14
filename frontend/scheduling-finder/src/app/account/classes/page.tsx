@@ -5,13 +5,26 @@ import { useSession } from "next-auth/react"
 
 import Image from "next/image";
 import HugeTitle from "../../Components/Typography/HugeTitle";
-import { FormEvent, useState } from "react";
+import { FormEvent, useEffect, useState } from "react";
 import ListItem from "@/app/Components/ListItem";
+import { User } from "@/lib/user";
 
 export default function Account() {
+  const [userData, setUserData] = useState<User | null>(null)
   const { data: session } = useSession()
 
-  if (!session) { return (<p>loading...</p>)}
+  useEffect(() => {
+    if (!session) { return }
+    async function fetchPosts() {
+      let res = await fetch('api/student/' + session?.user?.name)
+      let data = await res.json()
+      console.log(data)
+      setUserData(data)
+    }
+    fetchPosts()
+  }, [session])
+
+  if (!userData) { return (<p>loading...</p>)}
 
   return (
     <main className="flex flex-col gap-20 items-start justify-items-center min-h-screen p-8 pb-20 sm:p-20 font-[family-name:var(--font-geist-sans)]">
@@ -22,9 +35,9 @@ export default function Account() {
       </header>
       <div className="flex flex-col gap-5 items-start">
         <div className="flex flex-col gap-2 items-stretch">
-            <ListItem title="15151" caption="Mathematical Foundations for Computer Science" href="/classes/15151" />
-            <ListItem title="21241" caption="Matrices and Linear Transformations" href="/classes/21241" />
-            <ListItem title="15122" caption="Principles of Imperative Computation" href="/classes/15122" />
+            {userData.classes.map(course => (
+              <ListItem title={course.courseNum} caption={course.courseName} href={"/classes/" + course.courseNum}/>
+            ))}
         </div>
       </div>
     </main>
