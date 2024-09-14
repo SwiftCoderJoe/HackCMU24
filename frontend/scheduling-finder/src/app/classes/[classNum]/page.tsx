@@ -14,7 +14,7 @@ export default function ClassPage({ params }: { params: { classNum: string } }) 
       <header className="flex flex-col gap-2 row-start-2 items-center sm:items-start">
         <a className="text-3xl">{session?.user?.name}'s suggestions for</a>
         <HugeTitle>{params.classNum}.</HugeTitle>
-        <ListItem title="Back to Home" caption="Home" href="/account"/>
+        <ListItem title="Back to Home" href="/account"/>
       </header>
       <div className="flex flex-col gap-5 items-start">
         <div className="flex flex-col gap-2 items-stretch">

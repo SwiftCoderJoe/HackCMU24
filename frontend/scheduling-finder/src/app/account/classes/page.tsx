@@ -18,7 +18,7 @@ export default function Account() {
       <header className="flex flex-col gap-2 row-start-2 items-center sm:items-start">
         <a href="/account" className="cursor-pointer text-3xl">{session?.user?.name}'s</a>
         <HugeTitle>Classes.</HugeTitle>
-        <ListItem title="Back to Home" caption="Home" href="/account"/>
+        <ListItem title="Back to Home" href="/account"/>
       </header>
       <div className="flex flex-col gap-5 items-start">
         <div className="flex flex-col gap-2 items-stretch">
