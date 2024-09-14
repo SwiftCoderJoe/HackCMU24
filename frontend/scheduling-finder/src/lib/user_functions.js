@@ -3,6 +3,7 @@ import { initializeApp } from "firebase/app";
 // https://firebase.google.com/docs/web/setup#available-libraries
 import { getFirestore } from "firebase/firestore";
 import { doc, collection, getDoc, addDoc, setDoc, updateDoc, arrayUnion, arrayRemove } from "firebase/firestore"; 
+import { getGroup } from './group_functions.js'
 
 // Your web app's Firebase configuration
 // For Firebase JS SDK v7.20.0 and later, measurementId is optional
@@ -113,4 +114,22 @@ export async function setup(username, classTimes) {
         }
     }
     return times
+}
+
+export async function canMakeGroup(username, groupID) {
+    let userTimes = getUserData(username).times
+    let groupStarts = getGroup(groupID).startTimes
+    let groupEnds = getGroup(groupID).endTimes
+
+    for(let i = 0; i < 7; ++i) {
+        let start = groupStarts[i]
+        let end = groupEnds[i]
+
+        for(let j = start; j <= end; ++j) {
+            if(!userTimes[j]) {
+                return false
+            }
+        }
+    }
+    return true
 }

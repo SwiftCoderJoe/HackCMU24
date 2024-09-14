@@ -3,7 +3,6 @@ import { initializeApp } from "firebase/app";
 // https://firebase.google.com/docs/web/setup#available-libraries
 import { getFirestore } from "firebase/firestore";
 import { doc, collection, getDoc, getDocs, addDoc, updateDoc, deleteDoc, query } from "firebase/firestore"; 
-import { getUserData } from './user_functions.js';
 // Your web app's Firebase configuration
 // For Firebase JS SDK v7.20.0 and later, measurementId is optional
 const firebaseConfig = {
@@ -53,9 +52,4 @@ export async function updateDescription(groupID, description) {
     await updateDoc(doc(db, 'groups', groupID), {
         description: description
     })
-}
-
-export async function canMake(username, groupID) {
-    const user = getUserData(username)
-    const group = getGroup(groupID)
 }
