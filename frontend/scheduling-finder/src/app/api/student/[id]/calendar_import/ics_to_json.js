@@ -87,15 +87,21 @@ const icsToJson = icsData => {
         break;
       case START_DATE:
         var v = parseInt(value.substring(9));
-        if(Math.floor(v/1000) % 10 == 5 || Math.floor(v/1000) % 10 == 2){
+        if(Math.floor(v/1000) % 10 == 2){
           v += 1000;
         } 
+        if(Math.floor(v/1000) % 10 == 5){
+          v = v + 5000;
+        }
         currentObj[keyMap[START_DATE]] = v;
         break;
       case END_DATE:
         var v = parseInt(value.substring(9));
-        if(Math.floor(v/1000) % 10 == 5 || Math.floor(v/1000) % 10 == 2){
+        if(Math.floor(v/1000) % 10 == 2){
           v += 1000;
+        } 
+        if(Math.floor(v/1000) % 10 == 5){
+          v = v + 5000;
         } 
         currentObj[keyMap[END_DATE]] = v;
         break;
