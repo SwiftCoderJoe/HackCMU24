@@ -13,7 +13,6 @@ export default function Home() {
           <p className="text-3xl">Sign up to find your new smartest friends.</p>
         </header>
         <div className="row-start-3 flex gap-6 flex-wrap items-center justify-center">
-          {/* <a className="text-5xl cursor-pointer hover:bg-slate-200 hover:text-black rounded-md transition-all duration-200">Sign up now.</a> */}
           <LoginButton />
         </div>
       </main>
