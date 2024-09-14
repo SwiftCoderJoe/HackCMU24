@@ -70,8 +70,8 @@ export default function Account() {
           <div className="flex flex-col items-stretch gap-2">
             <p className="text-3xl">My study groups:</p>
             {userData.groups.length < 1 ? <p>You haven't joined any study groups!</p> : <>
-              {userData.groups.map(group => (
-                <ListItem title="a" caption="b" href="c" />
+              {userData.groups.map((group:any) => (
+                <ListItem title={group} href={"/groups/" + group} />
               ))}
               {/* <ListItem title="Haolin's Study Group" caption="Tuesdays, Thursdays, 7:00pm" href="/groups/haolin-group"/>
               <ListItem title="Tyler's Study Group" caption="Mondays, Fridays, 6:30pm" />
