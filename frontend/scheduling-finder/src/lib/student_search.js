@@ -7,7 +7,18 @@ import { getUserData } from "./user_functions";
 //student_list is a list of strings (names)
 //returns a list of kvp. first is number of hours in common, second is a list of students
 
-function matchDay(time1, time2, lo, hi){
+export function getTimes(student){
+    let ret = [];
+    for(let i = 0; i< 7; i++){
+        ret.push([]);
+        for(let j = 0; j< 48; j++){
+            ret[i].push(getUserData(student).times[48*i + j]);
+        }
+    }
+    return ret;
+}
+
+export function matchDay(time1, time2, lo, hi){
     //ret is an array of half hour intervals where both are free
     let ret = {};
     for(let i = lo; i<hi; i++){
@@ -19,7 +30,7 @@ function matchDay(time1, time2, lo, hi){
 }
 
 //array of 7, each item is a list of 30min periods
-function matchWeek(time1, time2, lo, hi){
+export function matchWeek(time1, time2, lo, hi){
     let ret = {};
     for(let i = 0; i<7; i++){
         ret.push(matchDay(time1[i], time2[i], lo, hi));
@@ -27,7 +38,7 @@ function matchWeek(time1, time2, lo, hi){
     return ret;
 }
 
-function getMatchesCnt(matchTimes){
+export function getMatchesCnt(matchTimes){
     let ret = 0;
     for(let i = 0; i<7; i++){
         ret += matchTimes.length;
@@ -35,14 +46,10 @@ function getMatchesCnt(matchTimes){
     return ret;
 }
 
-function studentSearch(time, student_list, lo, hi){
+export function studentSearch(time, student_list, lo, hi){
     let ret = {};
     for(let i = 0; i< student_list.length; i++){
-        let data = getUserData(student_list[i]);
-        let val = 0;
-        //days of the week 
-        let student = getUserData(student_list[i]);
-        let matches = matchWeek(time, student.times, lo, hi);
+        let matches = matchWeek(time, getTimes(student[i]), lo, hi);
         let matchCnt = getMatchesCnt(matches);
         if(ret[matchCnt] == undefined){
             ret[matchCnt] = [];
