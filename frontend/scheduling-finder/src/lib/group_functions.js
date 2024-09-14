@@ -3,7 +3,7 @@ import { initializeApp } from "firebase/app";
 // https://firebase.google.com/docs/web/setup#available-libraries
 import { getFirestore } from "firebase/firestore";
 import { doc, collection, getDoc, getDocs, addDoc, updateDoc, deleteDoc, query } from "firebase/firestore"; 
-
+import { getUserData } from './user_functions.js';
 // Your web app's Firebase configuration
 // For Firebase JS SDK v7.20.0 and later, measurementId is optional
 const firebaseConfig = {
@@ -20,11 +20,13 @@ const firebaseConfig = {
 const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
 
-export async function createGroup(group, times, topicClass, description) {
+export async function createGroup(group, startTimes, endTimes, topicClass, description) {
+    //startTimes, endTimes are int arrays of length 7 where each int is in half hour block format
     await addDoc(collection(db, 'groups'), {
         groupName: group,
         users: [],
-        times: times,
+        startTimes: startTimes,
+        endTimes: endTimes,
         topicClass: topicClass,
         description: description
     })
@@ -51,4 +53,9 @@ export async function updateDescription(groupID, description) {
     await updateDoc(doc(db, 'groups', groupID), {
         description: description
     })
+}
+
+export async function canMake(username, groupID) {
+    const user = getUserData(username)
+    const group = getGroup(groupID)
 }
