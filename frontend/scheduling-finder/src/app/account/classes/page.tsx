@@ -7,6 +7,7 @@ import Image from "next/image";
 import HugeTitle from "../../Components/Typography/HugeTitle";
 import { FormEvent, useState } from "react";
 import ListItem from "@/app/Components/ListItem";
+import HomeButton from "@/app/Components/HomeButton";
 
 export default function Account() {
   const { data: session } = useSession()
@@ -25,6 +26,7 @@ export default function Account() {
           <ListItem title="21241" caption="Matrices and Linear Transformations" />
           <ListItem title="15122" caption="Principles of Imperative Computation" />
         </div>
+        <HomeButton/>
       </div>
     </main>
   );
