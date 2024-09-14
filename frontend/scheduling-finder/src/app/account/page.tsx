@@ -12,7 +12,6 @@ import Calendar from "../Components/Calendar";
 export default function Account() {
   const [userData, setUserData] = useState<User | null>(null)
   const { data: session } = useSession()
-  const needsUploading = true
 
   useEffect(() => {
     if (!session) { return }
@@ -53,7 +52,7 @@ export default function Account() {
           <HugeTitle>{userData.username}.</HugeTitle>
         </header>
         <div className="flex flex-col gap-5 items-start">
-          {needsUploading ? (
+          {userData.uploaded ? (
             <form className="flex flex-col items-start gap-2" onSubmit={onSubmit}>
               <p className="text-3xl">Schedule:</p>
               <input
