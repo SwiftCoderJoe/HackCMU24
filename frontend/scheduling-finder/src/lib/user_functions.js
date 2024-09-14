@@ -76,7 +76,7 @@ export async function setup(username, classTimes) {
     }
 
     for(let i = 0; i < classTimes.length; ++i) {
-        const classObj = JSON.parse(classTimes[i])
+        const classObj = classTimes[i]
         let daysOfWeek = classObj.frequency
         let startTime = classObj.startDate
         let endTime = classObj.endDate
