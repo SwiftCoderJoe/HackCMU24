@@ -72,7 +72,7 @@ export async function updateContact(username, contact) {
 export async function setup(username, classTimes) {
     let times = []
     for(let i = 0; i < 336; ++i) {
-        times[i] = true
+        times.push(true)
     }
 
     for(let i = 0; i < classTimes.length; ++i) {
@@ -101,11 +101,12 @@ export async function setup(username, classTimes) {
         const snapshot = await getDoc(ref)
         if(snapshot.exists()) {
             await updateDoc(ref, {
-                users: arrayUnion(courseInfo)
+                users: arrayUnion(username)
             })
         } else {
             await setDoc(doc(db, 'classes', courseInfo), {
-                className: courseInfo,
+                classNumber: courseNumber,
+                className: courseName,
                 users: [username]
             })
         }
