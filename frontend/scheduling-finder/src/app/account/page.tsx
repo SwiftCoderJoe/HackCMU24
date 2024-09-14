@@ -3,7 +3,6 @@
 import { SessionProvider } from "next-auth/react"
 import { useSession } from "next-auth/react"
 
-import Image from "next/image";
 import HugeTitle from "../Components/Typography/HugeTitle";
 import ListItem from "../Components/ListItem";
 import { FormEvent, useState } from "react";
@@ -47,14 +46,13 @@ export default function Account() {
                 name="file"
                 onChange={(e) => setFile(e.target.files?.[0])}
               />
-              <input className="cursor-pointer hover:bg-slate-200 hover:text-black rounded-md transition-all duration-200 border-slate-200 border" type="submit" value="Upload" />
+              <input className="p-2 text-3xl cursor-pointer hover:bg-slate-200 hover:text-black rounded-md transition-all duration-200 border-slate-200 border" type="submit" value="Upload" />
             </form>
           ): (<p>Uploaded successfully.</p>)}
           <div className="flex flex-col items-start gap-2">
             <p className="text-3xl">Find a study group:</p>
-            <a href="account/classes" className="text-xl cursor-pointer hover:bg-slate-200 hover:text-black rounded-md transition-all duration-200 border-slate-200 border">Search by class</a>
-            <a className="text-xl cursor-pointer hover:bg-slate-200 hover:text-black rounded-md transition-all duration-200 border-slate-200 border">Search by time..?</a>
-            <a className="text-xl cursor-pointer hover:bg-slate-200 hover:text-black rounded-md transition-all duration-200 border-slate-200 border">Search by person..?</a>
+            <ListItem href="account/classes" title="Search by class" />
+            <ListItem href="account/unknown" title="Search by student" />
           </div>
         </div>
       </main>
