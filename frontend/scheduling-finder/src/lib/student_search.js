@@ -8,13 +8,14 @@ import { getUserData } from "./user_functions";
 //returns a list of kvp. first is number of hours in common, second is a list of students
 
 export async function getTimes(student){
+    const userData = await getUserData(student)
     let ret = [];
     for(let i = 0; i< 7; i++){
         ret.push([]);
         for(let j = 0; j< 48; j++){
-            ret[i].push((await getUserData(student)).times[48*i + j]);
+            ret[i].push(userData.times[48*i + j]);
         }
-    }
+    }   
     return ret;
 }
 
