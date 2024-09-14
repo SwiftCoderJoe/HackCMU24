@@ -83,16 +83,17 @@ export async function setup(username, classTimes) {
         let courseNumber = classObj.courseNum
 
         for(let j = 0; j < daysOfWeek.length; ++j) {
-            let start = j * 48 + startTime/5000 + (startTime % 10000 + 1000)/3000
-            let end = j * 48 + endTime/5000 + (endTime % 10000 + 1000)/3000
+            let start = daysOfWeek[j] * 48 + Math.floor(startTime/5000) + (startTime % 10000)/3000
+            let end = daysOfWeek[j] * 48 + Math.floor(endTime/5000) + (endTime % 10000)/3000
             for(let k = start; k < end; ++k) {
                 times[k] = false
             }
         }
         
-        let courseInfo = courseName + ':' + courseNumber
+        let courseInfo = courseName + ' : ' + courseNumber
         await updateDoc(doc(db, 'users', username), {
-            classes: arrayUnion(courseInfo)
+            classes: arrayUnion(courseInfo),
+            uploaded: true
         })
     
         const ref = doc(db, 'classes', courseInfo)
