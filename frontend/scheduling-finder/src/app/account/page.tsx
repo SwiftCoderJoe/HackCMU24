@@ -5,10 +5,25 @@ import { useSession } from "next-auth/react"
 
 import HugeTitle from "../Components/Typography/HugeTitle";
 import ListItem from "../Components/ListItem";
-import { FormEvent, useState } from "react";
+import { FormEvent, useEffect, useState } from "react";
 import Calendar from "../Components/Calendar";
 
 export default function Account() {
+  const [userData, setUserData] = useState(null)
+  const { data: session } = useSession()
+  const needsUploading = true
+
+  useEffect(() => {
+    if (!session) { return }
+    async function fetchPosts() {
+      let res = await fetch('api/student/' + session?.user?.name)
+      let data = await res.json()
+      console.log(data)
+      setUserData(data)
+    }
+    fetchPosts()
+  }, [session])
+
   const randomBooleanArray = [
     [true, false, true, false, true, true, false, true, false, false, true, true, false, true, true, false, true, false, true, true, false, false, true, false, true, true, false, true, false, true, true, false, true, false, false, true, false, true, true, false, true, true, false, false, true, false, true, true],
     [false, true, false, true, false, false, true, false, true, true, false, false, true, false, false, true, false, true, false, false, true, true, false, true, false, false, true, false, true, false, false, true, false, true, true, false, true, false, false, true, false, false, true, true, false, true, false, false],
@@ -18,9 +33,8 @@ export default function Account() {
     [false, true, false, true, false, false, true, false, true, true, false, false, true, false, false, true, false, true, false, false, true, true, false, true, false, false, true, false, true, false, false, true, false, true, true, false, true, false, false, true, false, false, true, true, false, true, false, false],
     [true, false, true, false, true, true, false, true, false, false, true, true, false, true, true, false, true, false, true, true, false, false, true, false, true, true, false, true, false, true, true, false, true, false, false, true, false, true, true, false, true, true, false, false, true, false, true, true],
   ];
+
   const [file, setFile] = useState<File>()
-  const { data: session } = useSession()
-  const needsUploading = true;
 
   const onSubmit = async function(e: FormEvent) {
     e.preventDefault()

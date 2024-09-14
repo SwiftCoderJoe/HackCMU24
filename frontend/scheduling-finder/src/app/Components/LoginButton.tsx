@@ -2,6 +2,13 @@ import { useSession, signIn, signOut } from "next-auth/react"
 
 export default function LoginButton() {
   const { data: session } = useSession()
+
+  if (session != null) {
+    fetch("api/register/" + session.user?.name, {
+      method: "PUT"
+    })
+  }
+
   if (session != null && session.user != null) {
     return (
       <div className="flex-col">
