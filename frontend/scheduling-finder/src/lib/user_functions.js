@@ -2,7 +2,7 @@ import { initializeApp } from "firebase/app";
 // TODO: Add SDKs for Firebase products that you want to use
 // https://firebase.google.com/docs/web/setup#available-libraries
 import { getFirestore } from "firebase/firestore";
-import { doc, setDoc, updateDoc, arrayUnion, arrayRemove } from "firebase/firestore"; 
+import { doc, collection, getDoc, addDoc, setDoc, updateDoc, arrayUnion, arrayRemove } from "firebase/firestore"; 
 
 // Your web app's Firebase configuration
 // For Firebase JS SDK v7.20.0 and later, measurementId is optional
@@ -24,34 +24,14 @@ export async function register(username) {
     await setDoc(doc(db, 'users', username), {
         username: username,
         classes: [],
+        times: [],
         groups: [],
         contact: ''
     })
 }
 
 export async function getUserData(username) {
-    await getDoc(doc(db, 'users', username))
-}
-
-export async function addClass(username, className) {
-    await updateDoc(doc(db, 'users', username), {
-        classes: arrayUnion(className)
-    })
-
-    await setDoc(doc(db, 'classes', className), {
-        className: className,
-        users: arrayUnion(username)
-    })
-}
-
-export async function removeClass(username, className) {
-    await updateDoc(doc(db, 'users', username), {
-        classes: arrayRemove(className)
-    })
-
-    await updateDoc(doc(db, 'classes', className), {
-        users: arrayRemove(username)
-    })
+    return (await getDoc(doc(db, 'users', username))).data()
 }
 
 export async function addGroup(username, groupName) {
@@ -59,9 +39,13 @@ export async function addGroup(username, groupName) {
         groups: arrayUnion(groupName)
     })
 
-    await setDoc(doc(db, 'groups', groupName), {
-        users: arrayUnion(username)
-    })
+    const ref = doc(db, 'groups', groupName)
+    const snapshot = await getDoc(ref)
+    if(snapshot.exists()) {
+        await updateDoc(ref, {
+            users: arrayUnion(username)
+        })
+    }
 }
 
 export async function removeGroup(username, groupName) {
@@ -69,13 +53,60 @@ export async function removeGroup(username, groupName) {
         groups: arrayRemove(groupName)
     })
 
-    await updateDoc(doc(db, 'groups', groupName), {
-        users: arrayRemove(username)
-    })
+    const ref = doc(db, 'groups', groupName)
+    const snapshot = await getDoc(ref)
+    if(snapshot.exists()) {
+        await updateDoc(ref, {
+            users: arrayRemove(username)
+        })
+    }
 }
 
 export async function updateContact(username, contact) {
     await updateDoc(doc(db, 'users', username), {
         contact: contact
     })
+}
+
+export async function setup(username, classTimes) {
+    let times = []
+    for(let i = 0; i < 336; ++i) {
+        times[i] = true
+    }
+
+    for(let i = 0; i < classTimes.length; ++i) {
+        const classObj = JSON.parse(classTimes[i])
+        let daysOfWeek = classObj.frequency
+        let startTime = classObj.startDate
+        let endTime = classObj.endDate
+        let courseName = classObj.courseName
+        let courseNumber = classObj.courseNum
+
+        for(let j = 0; j < daysOfWeek.length; ++j) {
+            let start = j * 48 + startTime/5000 + (startTime % 10000 + 1000)/3000
+            let end = j * 48 + endTime/5000 + (endTime % 10000 + 1000)/3000
+            for(let k = start; k < end; ++k) {
+                times[k] = false
+            }
+        }
+        
+        let courseInfo = courseName + ':' + courseNumber
+        await updateDoc(doc(db, 'users', username), {
+            classes: arrayUnion(courseInfo)
+        })
+    
+        const ref = doc(db, 'classes', courseInfo)
+        const snapshot = await getDoc(ref)
+        if(snapshot.exists()) {
+            await updateDoc(ref, {
+                users: arrayUnion(courseInfo)
+            })
+        } else {
+            await setDoc(doc(db, 'classes', courseInfo), {
+                className: courseInfo,
+                users: [username]
+            })
+        }
+    }
+    return times
 }
