@@ -42,7 +42,7 @@ export function matchWeek(time1, time2, lo, hi){
 export function getMatchesCnt(matchTimes){
     let ret = 0;
     for(let i = 0; i<7; i++){
-        ret += matchTimes.length;
+        ret += matchTimes[i].length;
     }
     return ret;
 }

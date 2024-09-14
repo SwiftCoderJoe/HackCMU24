@@ -17,7 +17,7 @@ export default function Account() {
 
   useEffect(() => {
     if (!session) { return }
-    async function fetchPosts() {
+    async function fetchData() {
       let res = await fetch('/api/student/' + session?.user?.name);
       let data = await res.json();
       console.log(data);
@@ -31,7 +31,7 @@ export default function Account() {
       setUserData(data);
       setCourseData(courseData);
     }
-    fetchPosts()
+    fetchData()
   }, [session])
 
   if (!userData) { return (<p>loading...</p>)}

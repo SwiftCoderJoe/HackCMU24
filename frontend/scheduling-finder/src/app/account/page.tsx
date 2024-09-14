@@ -15,13 +15,13 @@ export default function Account() {
 
   useEffect(() => {
     if (!session) { return }
-    async function fetchPosts() {
+    async function fetchData() {
       let res = await fetch('api/student/' + session?.user?.name)
       let data = await res.json()
       console.log(data)
       setUserData(data)
     }
-    fetchPosts()
+    fetchData()
   }, [session])
 
   const [file, setFile] = useState<File>()
