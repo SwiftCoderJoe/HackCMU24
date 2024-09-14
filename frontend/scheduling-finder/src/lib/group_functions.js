@@ -18,7 +18,7 @@ const firebaseConfig = {
 
 // Initialize Firebase
 const app = initializeApp(firebaseConfig);
-const db = getFirestore(app);n
+const db = getFirestore(app);
 
 export async function createGroup(group, times, topicClass, description) {
     await setDoc(doc(db, 'groups', group), {
