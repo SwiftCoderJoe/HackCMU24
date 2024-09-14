@@ -20,7 +20,7 @@ export async function getTimes(student){
 
 export function matchDay(time1, time2, lo, hi){
     //ret is an array of half hour intervals where both are free
-    let ret = {};
+    let ret = [];
     for(let i = lo; i<hi; i++){
         if(time1[i] && time2[i]){
             ret.push(i);
@@ -31,7 +31,7 @@ export function matchDay(time1, time2, lo, hi){
 
 //array of 7, each item is a list of 30min periods
 export function matchWeek(time1, time2, lo, hi){
-    let ret = {};
+    let ret = [];
     for(let i = 0; i<7; i++){
         ret.push(matchDay(time1[i], time2[i], lo, hi));
     }
@@ -47,13 +47,15 @@ export function getMatchesCnt(matchTimes){
 }
 
 export async function studentSearch(time, student_list, lo, hi){
-    let ret = {};
+    let ret = [];
     for(let i = 0; i< student_list.length; i++){
-        let matches = matchWeek(time, await getTimes(student[i]), lo, hi);
+        let matches = matchWeek(time, await getTimes(student_list[i]), lo, hi);
         let matchCnt = getMatchesCnt(matches);
         if(ret[matchCnt] == undefined){
             ret[matchCnt] = [];
         }
         ret[matchCnt].push(student_list[i]);
     }
+
+    return ret
 }

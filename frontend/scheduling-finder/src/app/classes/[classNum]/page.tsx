@@ -32,11 +32,13 @@ export default function ClassPage({ params }: { params: { classNum: string } }) 
       console.log(studentData)
       setStudentData(studentData);
       setCourseData(classData);
+
+      console.log("done")
     }
     fetchPosts()
   }, [session])
   
-  if (!userData) { return (<p>loading...</p>)}
+  if (!userData || !studentData) { return (<p>loading...</p>)}
 
   return (
     <main className="flex flex-col gap-20 items-start justify-items-center min-h-screen p-8 pb-20 sm:p-20 font-[family-name:var(--font-geist-sans)]">
@@ -54,7 +56,9 @@ export default function ClassPage({ params }: { params: { classNum: string } }) 
         </div>
         <div className="flex flex-col gap-2 items-stretch">
           <p className="text-3xl">Students with common free time:</p>
-
+          {Array.from(Array(200).keys()).toReversed().map(key => (studentData[key] ?
+            <ListItem title={studentData[key]} caption={(key/2) + " Hours"} /> : null
+          ))}
         </div>
       </div>
     </main>
