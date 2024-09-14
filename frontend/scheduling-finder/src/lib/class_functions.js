@@ -2,7 +2,7 @@ import { initializeApp } from "firebase/app";
 // TODO: Add SDKs for Firebase products that you want to use
 // https://firebase.google.com/docs/web/setup#available-libraries
 import { getFirestore } from "firebase/firestore";
-import { doc, getDoc } from "firebase/firestore"; 
+import { doc, collection, getDoc, getDocs, query } from "firebase/firestore"; 
 
 // Your web app's Firebase configuration
 // For Firebase JS SDK v7.20.0 and later, measurementId is optional
@@ -20,10 +20,19 @@ const firebaseConfig = {
 const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
 
+export async function getAllClasses() {
+  const querySnapshot = await getDocs(query(collection(db, 'classes')))
+  let classes = []
+  querySnapshot.forEach((doc) => {
+      classes.push(doc.data())
+  })
+  return classes
+}
+
 export async function getClass(className) {
-    await getDoc(doc(db, 'classes', className))
+  return (await getDoc(doc(db, 'classes', className))).data()
 }
 
 export async function getStudents(className) {
-    (await getClass(className)).users
+  return (await getClass(className)).users
 }
