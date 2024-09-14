@@ -94,7 +94,8 @@ export async function setup(username, classTimes) {
         let courseInfo = courseNumber + ' : ' + courseName
         await updateDoc(doc(db, 'users', username), {
             classes: arrayUnion(courseInfo),
-            uploaded: true
+            uploaded: true,
+            times: times
         })
     
         const ref = doc(db, 'classes', courseInfo)

@@ -8,6 +8,6 @@ export interface User {
 }
 
 export interface Course {
-    courseName: string
-    courseNum: string
+    className: string
+    classNumber: string
 }

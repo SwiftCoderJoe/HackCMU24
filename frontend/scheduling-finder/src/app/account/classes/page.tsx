@@ -18,7 +18,7 @@ export default function Account() {
   useEffect(() => {
     if (!session) { return }
     async function fetchPosts() {
-      let res = await fetch('api/student/' + session?.user?.name);
+      let res = await fetch('/api/student/' + session?.user?.name);
       let data = await res.json();
       console.log(data);
 
@@ -27,6 +27,7 @@ export default function Account() {
         courseData[course] = await getClass(course);
       }
 
+      console.log(courseData)
       setUserData(data);
       setCourseData(courseData);
     }
@@ -45,7 +46,7 @@ export default function Account() {
       <div className="flex flex-col gap-5 items-start">
         <div className="flex flex-col gap-2 items-stretch">
             {userData.classes.map(courseName => (
-              <ListItem title={courseData[courseName].courseNum} caption={courseData[courseName].courseName} href={"/classes/" + courseData[courseName].courseNum}/>
+              <ListItem title={courseData[courseName].classNumber} caption={courseData[courseName].className} href={"/classes/" + courseName}/>
             ))}
         </div>
       </div>
