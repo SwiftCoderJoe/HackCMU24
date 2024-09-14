@@ -1,5 +1,6 @@
 import Image from "next/image";
 import HugeTitle from "./Components/Typography/HugeTitle";
+import LoginButton from "./Components/login-btn";
 
 export default function Home() {
   return (
