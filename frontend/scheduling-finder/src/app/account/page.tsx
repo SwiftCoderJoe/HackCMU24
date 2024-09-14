@@ -2,6 +2,7 @@
 
 import { SessionProvider } from "next-auth/react"
 import { useSession } from "next-auth/react"
+import type { User } from "../../lib/user"
 
 import HugeTitle from "../Components/Typography/HugeTitle";
 import ListItem from "../Components/ListItem";
@@ -9,7 +10,7 @@ import { FormEvent, useEffect, useState } from "react";
 import Calendar from "../Components/Calendar";
 
 export default function Account() {
-  const [userData, setUserData] = useState(null)
+  const [userData, setUserData] = useState<User | null>(null)
   const { data: session } = useSession()
   const needsUploading = true
 
@@ -23,16 +24,6 @@ export default function Account() {
     }
     fetchPosts()
   }, [session])
-
-  const randomBooleanArray = [
-    [true, false, true, false, true, true, false, true, false, false, true, true, false, true, true, false, true, false, true, true, false, false, true, false, true, true, false, true, false, true, true, false, true, false, false, true, false, true, true, false, true, true, false, false, true, false, true, true],
-    [false, true, false, true, false, false, true, false, true, true, false, false, true, false, false, true, false, true, false, false, true, true, false, true, false, false, true, false, true, false, false, true, false, true, true, false, true, false, false, true, false, false, true, true, false, true, false, false],
-    [true, false, true, false, true, true, false, true, false, false, true, true, false, true, true, false, true, false, true, true, false, false, true, false, true, false, true, true, false, true, false, false, true, true, false, true, false, true, true, false, true, false, true, true, false, false, true, false],
-    [false, true, false, true, false, false, true, false, true, true, false, false, true, false, false, true, false, true, false, false, true, true, false, true, false, true, false, false, true, false, true, true, false, false, true, false, true, false, false, true, false, true, false, false, true, true, false, true],
-    [true, false, true, false, true, true, false, true, false, false, true, true, false, true, true, false, true, false, true, true, false, false, true, false, true, true, false, true, false, true, true, false, true, false, false, true, false, true, true, false, true, true, false, false, true, false, true, true],
-    [false, true, false, true, false, false, true, false, true, true, false, false, true, false, false, true, false, true, false, false, true, true, false, true, false, false, true, false, true, false, false, true, false, true, true, false, true, false, false, true, false, false, true, true, false, true, false, false],
-    [true, false, true, false, true, true, false, true, false, false, true, true, false, true, true, false, true, false, true, true, false, false, true, false, true, true, false, true, false, true, true, false, true, false, false, true, false, true, true, false, true, true, false, false, true, false, true, true],
-  ];
 
   const [file, setFile] = useState<File>()
 
@@ -53,13 +44,13 @@ export default function Account() {
     }
   }
 
-  if (!session) { return (<p>loading...</p>)}
+  if (!userData) { return (<p>loading...</p>)}
 
   return (
       <main className="flex flex-col gap-20 items-start justify-items-center min-h-screen p-8 pb-20 sm:p-20 font-[family-name:var(--font-geist-sans)]">
         <header className="flex flex-col gap-2 row-start-2 items-center sm:items-start">
           <p className="text-3xl">Welcome,</p>
-          <HugeTitle>{session?.user?.name}.</HugeTitle>
+          <HugeTitle>{userData.username}.</HugeTitle>
         </header>
         <div className="flex flex-col gap-5 items-start">
           {needsUploading ? (
@@ -72,22 +63,28 @@ export default function Account() {
               />
               <input className="p-2 text-3xl cursor-pointer hover:bg-slate-200 hover:text-black rounded-md transition-all duration-200 border-slate-200 border" type="submit" value="Upload" />
             </form>
-          ): (<p>Uploaded successfully.</p>)}
+          ): (<p>Schedule uploaded successfully.</p>)}
           <div className="flex flex-col items-stretch gap-2">
             <p className="text-3xl">Find a study group:</p>
             <ListItem href="account/classes" title="Search by class" />
-            <ListItem href="account/unknown" title="Search by student" />
           </div>
           <div className="flex flex-col items-stretch gap-2">
             <p className="text-3xl">My study groups:</p>
-            <ListItem title="Haolin's Study Group" caption="Tuesdays, Thursdays, 7:00pm" href="/groups/haolin-group"/>
-            <ListItem title="Tyler's Study Group" caption="Mondays, Fridays, 6:30pm" />
-            <ListItem title="Joe's L33t h4x0rz" caption="Saturdays, 3am" />
+            {userData.groups.length < 1 ? <p>You haven't joined any study groups!</p> : <>
+              {userData.groups.map(group => (
+                <ListItem title="a" caption="b" href="c" />
+              ))}
+              {/* <ListItem title="Haolin's Study Group" caption="Tuesdays, Thursdays, 7:00pm" href="/groups/haolin-group"/>
+              <ListItem title="Tyler's Study Group" caption="Mondays, Fridays, 6:30pm" />
+              <ListItem title="Joe's L33t h4x0rz" caption="Saturdays, 3am" /> */}
+            </>}
           </div>
-          <div className="flex flex-col items-stretch gap-2">
-            <p className="text-3xl">My schedule:</p>
-            <Calendar busyArray={randomBooleanArray}/>
-          </div>
+          {userData.times.length < 7 ? null :
+            <div className="flex flex-col items-stretch gap-2">
+              <p className="text-3xl">My schedule:</p>
+                <Calendar busyArray={userData.times}/>
+            </div>
+          }
         </div>
       </main>
     );
