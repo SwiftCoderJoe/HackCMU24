@@ -8,16 +8,26 @@ const FREQUENCY = "RRULE"
 const END_DATE = "DTEND";
 const DESCRIPTION = "DESCRIPTION";
 const SUMMARY = "SUMMARY";
-const LOCATION = "LOCATION";
 const ALARM = "VALARM";
+const NUM = "NUM";
 
 const keyMap = {
   [START_DATE]: "startDate",
   [END_DATE]: "endDate",
-  [DESCRIPTION]: "description",
-  [SUMMARY]: "summary",
-  [LOCATION]: "location"
+  [SUMMARY]: "courseName",
+  [NUM]: "courseNum",
+  [FREQUENCY] : "frequency"
 };
+
+const dateMap = {
+  ["SU"] : 0,
+  ["MO"] : 1, 
+  ["TU"] : 2,
+  ["WE"] : 3, 
+  ["TH"] : 4, 
+  ["FR"] : 5,
+  ["SA"] : 6
+}
 
 const clean = string => unescape(string).trim();
 
@@ -31,7 +41,7 @@ const icsToJson = icsData => {
   let isAlarm = false;
   for (let i = 0, iLen = lines.length; i < iLen; ++i) {
     const line = lines[i];
-    const lineData = line.split(":");
+    const lineData = line.split(/:(.*)/s);
 
     let key = lineData[0];
     const value = lineData[1];
@@ -64,21 +74,28 @@ const icsToJson = icsData => {
         if (value === EVENT) array.push(currentObj);
         break;
       case FREQUENCY:
-        currentObj[keyMap[FREQUENCY]] = value;
+        let freq = value.split(";")[2];
+        freq = freq.substring(6);
+        const date = freq.split(",");
+        let date_list = [];
+        // console.log(date);
+        // console.log("DATEMAP TEST: " + date[0]);
+        for(let i = 0; i< date.length; i++){
+          date_list.push(dateMap[date[i]]);
+        } 
+        currentObj[keyMap[FREQUENCY]] = date_list;
+        break;
       case START_DATE:
-        currentObj[keyMap[START_DATE]] = value;
+        currentObj[keyMap[START_DATE]] = value.substring(9);
         break;
       case END_DATE:
-        currentObj[keyMap[END_DATE]] = value;
-        break;
-      case DESCRIPTION:
-        if (!isAlarm) currentObj[keyMap[DESCRIPTION]] = clean(value);
+        currentObj[keyMap[END_DATE]] = value.substring(9);
         break;
       case SUMMARY:
-        currentObj[keyMap[SUMMARY]] = clean(value);
+        const courseValue = value.split(/::(.*)/s);
+        currentObj[keyMap[SUMMARY]] = clean(courseValue[0]);
+        currentObj[keyMap[NUM]] = clean(courseValue[1]).substring(0, 5);
         break;
-      case LOCATION:
-        currentObj[keyMap[LOCATION]] = clean(value);
       default:
         continue;
     }
