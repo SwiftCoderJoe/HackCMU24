@@ -6,7 +6,7 @@ interface Props {
     href?: string
 }
 
-export default function CaptionedButton({title, caption, href}: Props) {
+export default function ListItem({title, caption, href}: Props) {
     return (
         href ? 
             (<a href={href} className="cursor-pointer">

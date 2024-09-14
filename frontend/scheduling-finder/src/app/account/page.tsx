@@ -5,6 +5,7 @@ import { useSession } from "next-auth/react"
 
 import Image from "next/image";
 import HugeTitle from "../Components/Typography/HugeTitle";
+import ListItem from "../Components/ListItem";
 import { FormEvent, useState } from "react";
 
 export default function Account() {
