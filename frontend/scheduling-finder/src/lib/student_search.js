@@ -50,6 +50,7 @@ export async function studentSearch(time, student_list, lo, hi){
     let ret = [];
     for(let i = 0; i< student_list.length; i++){
         let matches = matchWeek(time, await getTimes(student_list[i]), lo, hi);
+        console.log(matches)
         let matchCnt = getMatchesCnt(matches);
         if(ret[matchCnt] == undefined){
             ret[matchCnt] = [];

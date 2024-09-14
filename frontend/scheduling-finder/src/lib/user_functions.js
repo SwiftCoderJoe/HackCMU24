@@ -36,6 +36,10 @@ export async function getUserData(username) {
     return (await getDoc(doc(db, 'users', username))).data()
 }
 
+export async function getTimes(username) {
+    return (await getUserData(username)).times
+}
+
 export async function addGroup(username, groupName) {
     await updateDoc(doc(db, 'users', username), {
         groups: arrayUnion(groupName)
