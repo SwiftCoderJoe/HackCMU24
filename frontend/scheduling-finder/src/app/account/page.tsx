@@ -34,7 +34,7 @@ export default function Account() {
       const data = new FormData()
       data.set('file', file)
   
-      const res = await fetch("api/calendar_import", {
+      const res = await fetch("api/student/" + session?.user?.name + "/calendar_import", {
         method: "PUT",
         body: data
       });
