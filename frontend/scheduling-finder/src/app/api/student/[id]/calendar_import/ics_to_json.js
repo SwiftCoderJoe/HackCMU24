@@ -86,18 +86,18 @@ const icsToJson = icsData => {
         currentObj[keyMap[FREQUENCY]] = date_list;
         break;
       case START_DATE:
-        value = parseInt(value.substring(9));
-        if(Math.floor(value/1000) % 10 == 5 || Math.floor(value/1000) % 10 == 2){
-          value += 1000;
+        var v = parseInt(value.substring(9));
+        if(Math.floor(v/1000) % 10 == 5 || Math.floor(v/1000) % 10 == 2){
+          v += 1000;
         } 
-        currentObj[keyMap[START_DATE]] = value;
+        currentObj[keyMap[START_DATE]] = v;
         break;
       case END_DATE:
-        value = parseInt(value.substring(9));
-        if(Math.floor(value/1000) % 10 == 5 || Math.floor(value/1000) % 10 == 2){
-          value += 1000;
+        var v = parseInt(value.substring(9));
+        if(Math.floor(v/1000) % 10 == 5 || Math.floor(v/1000) % 10 == 2){
+          v += 1000;
         } 
-        currentObj[keyMap[START_DATE]] = value;
+        currentObj[keyMap[END_DATE]] = v;
         break;
       case SUMMARY:
         const courseValue = value.split(/::(.*)/s);

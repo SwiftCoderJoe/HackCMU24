@@ -10,6 +10,5 @@ export async function PUT(request : Request, { params }: {params: { id: string }
     
     setup(params.id, cleaned_data);
 
-    console.log(cleaned_data);
     return Response.json({text : "done" })
 }

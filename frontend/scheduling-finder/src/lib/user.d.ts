@@ -7,8 +7,7 @@ export interface User {
     times: boolean[][]
 }
 
-export interface Class {
+export interface Course {
     courseName: string
     courseNum: string
-    frequency: string
 }

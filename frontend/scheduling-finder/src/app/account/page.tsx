@@ -52,7 +52,7 @@ export default function Account() {
           <HugeTitle>{userData.username}.</HugeTitle>
         </header>
         <div className="flex flex-col gap-5 items-start">
-          {userData.uploaded ? (
+          {userData.uploaded ? (<p>Schedule uploaded successfully.</p>): (
             <form className="flex flex-col items-start gap-2" onSubmit={onSubmit}>
               <p className="text-3xl">Schedule:</p>
               <input
@@ -62,7 +62,7 @@ export default function Account() {
               />
               <input className="p-2 text-3xl cursor-pointer hover:bg-slate-200 hover:text-black rounded-md transition-all duration-200 border-slate-200 border" type="submit" value="Upload" />
             </form>
-          ): (<p>Schedule uploaded successfully.</p>)}
+          )}
           <div className="flex flex-col items-stretch gap-2">
             <p className="text-3xl">Find a study group:</p>
             <ListItem href="account/classes" title="Search by class" />
